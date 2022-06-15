@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { lib } from "../helper/httpClient";
-
+import { toast } from "react-toastify";
 export const postSlice = createSlice({
   name: "posts",
   initialState: {
@@ -9,6 +9,9 @@ export const postSlice = createSlice({
   reducers: {
     getposts: (state, action) => {
       state.posts = action.payload;
+    },
+    getPostsByUserId: (state, action) => {
+      state.posts = [...state.posts, action.payload];
     },
     savePost: (state, action) => {
       state.posts = [...state.posts, action.payload];
@@ -24,7 +27,8 @@ export const postSlice = createSlice({
   },
 });
 
-export const { getposts, savePost, updatePost, deletePost } = postSlice.actions;
+export const { getposts, savePost, updatePost, deletePost, getPostsByUserId } =
+  postSlice.actions;
 export default postSlice.reducer;
 
 export const fetchPosts = (props) => {
@@ -40,6 +44,20 @@ export const fetchPosts = (props) => {
   };
 };
 
+export const fetchPostsByUserId = (props) => {
+  return async function fetchPostsByUserId(dispatch) {
+    const urlMethods = {
+      url: "/posts",
+      method: "get",
+    };
+    const { data } = await lib.authRequest(urlMethods, props);
+    props = props.user_id;
+    if (data.code === 200) {
+      dispatch(getPostsByUserId(props));
+    }
+  };
+};
+
 export const savePosts = (props) => {
   return async function savePosts(dispatch) {
     const urlMethods = {
@@ -49,12 +67,13 @@ export const savePosts = (props) => {
     const { data } = await lib.authRequest(urlMethods, props);
     let newPayload = {
       id: data.result.id,
-      user_id: props.user_id,
+      user_id: data.user_id,
       title: props.title,
       description: props.description,
     };
     if (data.code === 200) {
       dispatch(savePost(newPayload));
+      toast.success("Post Created Successfully");
     }
   };
 };

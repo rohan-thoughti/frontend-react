@@ -49,7 +49,9 @@ li:hover {
 
 .user-cards-container {
   display: flex;
+  margin-top: 20px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .user-section {
@@ -59,24 +61,10 @@ li:hover {
   max-width: 630px;
   margin-top: 26px;
 }
-
-.user-cards-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 23px;
-  flex-wrap: wrap;
-}
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1pxsolidrgba (0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-  margin-bottom: 25px;
+.user-cards-container .card {
+  width: 100%;
+  max-width: 311px;
+  margin-bottom: 9px;
 }
 .logout-btn {
   text-align: end;
@@ -106,12 +94,12 @@ li:hover {
 }
 .h5,
 h5 {
-  font-size: 2.25rem !important;
+  font-size: 1.5rem !important;
 }
 
 .h6,
 h6 {
-  font-size: 2rem !important;
+  font-size: 1rem !important;
 }
 
 .btn {
@@ -119,7 +107,7 @@ h6 {
   margin-right: 5px;
   width: 64px;
   height: 32px;
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 .btn.btn-outline-danger {
   margin-top: 0px;

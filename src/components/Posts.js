@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   deletePosts,
   fetchPosts,
+  fetchPostsByUserId,
   savePosts,
   updatePosts,
 } from "../app/slice/postSlice";
@@ -13,20 +14,19 @@ import { signout } from "../app/slice/loginThunk";
 
 const Posts = () => {
   const post = useSelector((state) => state.posts.posts);
+  const user = useSelector((state) => state.login.userData);
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [user_id, setUserId] = useState("");
   const [id, setId] = useState(null);
-
   const [titleError, setTitleError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
-  const [userIdError, setuserIdError] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchPosts({ user_id: user.user_id }));
   }, []);
 
   const editPost = (item) => {
@@ -40,7 +40,6 @@ const Posts = () => {
     if (id == null) {
       let payload = {
         id: null,
-        user_id: user_id,
         title: title,
         description: description,
       };
@@ -48,26 +47,16 @@ const Posts = () => {
     } else {
       let payload = {
         id: id,
-        user_id: user_id,
+        user_id: user.user_id,
         title: title,
         description: description,
       };
       dispatch(updatePosts(payload));
-      window.location.reload(false);
     }
+    setTitle("");
+    setDescription("");
   };
 
-  const handleUserID = (value) => {
-    let numReg = /[0-9]/;
-    setUserId(value);
-    if (!numReg.test(value)) {
-      setuserIdError("Enter Valid User Id!");
-    } else if (!value.trim()) {
-      setuserIdError("User Id is Required");
-    } else {
-      setuserIdError(null);
-    }
-  };
   const handleTitle = (value) => {
     let max = 15;
     let min = 4;
@@ -83,7 +72,7 @@ const Posts = () => {
     }
   };
   const handledescription = (value) => {
-    let max = 15;
+    let max = 100;
     let min = 4;
     setDescription(value);
     if (!value.trim()) {
@@ -113,16 +102,6 @@ const Posts = () => {
           </Button>
         </div>
         <Form.Group className="mb-3">
-          <Form.Label>User Id</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="User Id"
-            value={user_id}
-            onChange={(evt) => handleUserID(evt.target.value)}
-          />
-          {userIdError && <p className="error-msg">{userIdError}</p>}
-        </Form.Group>
-        <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
@@ -150,12 +129,7 @@ const Posts = () => {
             saveUpdatePost();
           }}
           disabled={
-            !userIdError &&
-            !titleError &&
-            !descriptionError &&
-            user_id &&
-            title &&
-            description
+            !titleError && !descriptionError && title && description
               ? false
               : true
           }
@@ -165,7 +139,7 @@ const Posts = () => {
       </Form>
       <div className="user-cards-container">
         {post.map((item) => (
-          <Card key={item.id} style={{ width: "30rem" }}>
+          <Card key={item.id}>
             <Card.Body>
               <Card.Title>{item.title}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
@@ -184,7 +158,6 @@ const Posts = () => {
                   variant="danger"
                   onClick={() => {
                     dispatch(deletePosts({ id: item.id }));
-                    window.location.reload(false);
                   }}
                 >
                   Delete

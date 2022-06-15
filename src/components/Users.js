@@ -53,6 +53,9 @@ const Users = () => {
       dispatch(updateUsers(payload));
       window.location.reload(false);
     }
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   const handleName = (value) => {
@@ -167,7 +170,7 @@ const Users = () => {
       </Form>
       <div className="user-cards-container">
         {user.map((item) => (
-          <Card key={item.user_id} style={{ width: "30rem" }}>
+          <Card key={item.user_id}>
             <Card.Body>
               <Card.Title>{item.user_id}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted">

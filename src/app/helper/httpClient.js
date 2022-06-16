@@ -35,7 +35,7 @@ export const lib = {
       const data = response;
       return data;
     } catch (err) {
-      return err;
+      return err.response;
     }
   },
 };

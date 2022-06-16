@@ -47,15 +47,19 @@ export const saveUsers = (props) => {
       method: "post",
     };
     const { data } = await lib.authRequest(urlMethods, props);
-    let newPayload = {
-      user_id: data.result.user_id,
-      name: props.name,
-      email: props.email,
-      password: props.password,
-    };
+    debugger;
     if (data.code === 200) {
+      let newPayload = {
+        user_id: data.result.user_id,
+        name: props.name,
+        email: props.email,
+        password: props.password,
+      };
       dispatch(saveUser(newPayload));
       toast.success("User Created Successfully");
+    } else {
+      debugger;
+      toast.error(data.error);
     }
   };
 };
@@ -88,6 +92,7 @@ export const deleteUsers = (props) => {
     };
     const { data } = await lib.authRequest(urlMethods, props);
     let payload = props.user_id;
+
     if (data.code === 200) {
       dispatch(deleteUser(payload));
     }

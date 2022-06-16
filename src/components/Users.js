@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Card, Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
@@ -14,6 +15,7 @@ import { signout } from "../app/slice/loginThunk";
 
 const Users = () => {
   const user = useSelector((state) => state.users.users);
+  const loggedInUser = useSelector((state) => state.login.userData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -74,7 +76,7 @@ const Users = () => {
   };
   const handleEmail = (value) => {
     const emailReg =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     setEmail(value);
     if (!emailReg.test(value)) {
       setEmailError("Enter Valid Email!");
@@ -83,18 +85,26 @@ const Users = () => {
     }
   };
 
-  const handlePassword = (_value) => {
+  const handlePassword = (value) => {
     let max = 15;
     let min = 4;
-    setPassword(_value);
-    if (!_value.trim()) {
+    setPassword(value);
+    if (!value.trim()) {
       setPasswordError("Password is Required");
-    } else if (min != null && min > _value.length) {
+    } else if (min != null && min > value.length) {
       setPasswordError("Minimum " + min + " Characters Required!");
-    } else if (max != null && max < _value.length) {
+    } else if (max != null && max < value.length) {
       setPasswordError("Maximum " + max + " Characters are allowed!");
     } else {
       setPasswordError(null);
+    }
+  };
+  const handleDelete = (item) => {
+    if (item.user_id !== loggedInUser.user_id) {
+      dispatch(deleteUsers({ user_id: item.user_id }));
+      window.location.reload(false);
+    } else {
+      toast.error("Logged In User Record Cannot Deleted");
     }
   };
 
@@ -181,13 +191,7 @@ const Users = () => {
                 <Button variant="primary" onClick={() => editUser(item)}>
                   Edit
                 </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => {
-                    dispatch(deleteUsers({ user_id: item.user_id }));
-                    window.location.reload(false);
-                  }}
-                >
+                <Button variant="danger" onClick={() => handleDelete(item)}>
                   Delete
                 </Button>
               </div>

@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import {
   deletePosts,
   fetchPosts,
-  fetchPostsByUserId,
   savePosts,
   updatePosts,
 } from "../app/slice/postSlice";
@@ -18,7 +17,6 @@ const Posts = () => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [user_id, setUserId] = useState("");
   const [id, setId] = useState(null);
   const [titleError, setTitleError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
@@ -31,7 +29,6 @@ const Posts = () => {
 
   const editPost = (item) => {
     setId(item.id);
-    setUserId(item.user_id);
     setTitle(item.title);
     setDescription(item.description);
   };

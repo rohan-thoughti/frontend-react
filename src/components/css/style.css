@@ -75,7 +75,19 @@ li:hover {
 .profile-name.nav {
   margin-left: auto;
   margin-top: 17px;
+  display: flex;
   margin-right: 1px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.profile-name.nav i {
+  margin-right: 3px;
+  margin-top: -4px;
+  font-size: 19px;
+  border: 1px solid;
+  border-radius: 50%;
+  width: 28px;
+  padding: 3px;
 }
 .nav-item:hover {
   border-top: 1px solid #dee2e6;

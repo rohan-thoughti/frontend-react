@@ -32,15 +32,15 @@ const Login = () => {
     }
   };
 
-  const handlePassword = (_value) => {
+  const handlePassword = (value) => {
     let max = 15;
     let min = 4;
-    setPassword(_value);
-    if (!_value.trim()) {
+    setPassword(value);
+    if (!value.trim()) {
       setPasswordError("Password is Required");
-    } else if (min != null && min > _value.length) {
+    } else if (min != null && min > value.length) {
       setPasswordError("Minimum " + min + " Characters Required!");
-    } else if (max != null && max < _value.length) {
+    } else if (max != null && max < value.length) {
       setPasswordError("Maximum " + max + " Characters are allowed!");
     } else {
       setPasswordError(null);

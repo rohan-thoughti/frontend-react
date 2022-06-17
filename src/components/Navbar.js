@@ -20,6 +20,7 @@ const Navbar = () => {
           <Link to="/posts">Posts</Link>
         </Nav.Item>
         <Nav className="profile-name">
+          <i className="material-icons">person</i>
           <h6 key={loggedInUser.user_id}>{loggedInUser.name}</h6>
         </Nav>
       </Nav>

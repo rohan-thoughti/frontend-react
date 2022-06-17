@@ -19,7 +19,6 @@ const useAuth = () => {
 };
 const PrivateRoute = ({ children, ...rest }) => {
   const auth = useAuth();
-  console.log("thissssss");
   return auth ? <Outlet /> : <Navigate to="/login" />;
 };
 
